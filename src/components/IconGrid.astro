@@ -1,0 +1,44 @@
+---
+import type { IconEntry } from "../data/projects.ts";
+import IconPreview from "./IconPreview.astro";
+
+interface Props {
+	icon: IconEntry;
+}
+
+const { icon } = Astro.props;
+
+const SIZES = [16, 32, 48, 64, 128, 256, 512] as const;
+---
+
+<section class="icon-grid">
+	<h2 class="icon-grid__heading">{icon.label}</h2>
+	<div class="icon-grid__row">
+		{SIZES.map((size) => <IconPreview svgCode={icon.svgCode} size={size} />)}
+	</div>
+</section>
+
+<style>
+	.icon-grid {
+		margin-top: var(--space-8);
+	}
+
+	.icon-grid__heading {
+		font-size: var(--text-xl);
+		font-weight: 600;
+		margin-bottom: var(--space-4);
+	}
+
+	.icon-grid__row {
+		display: flex;
+		gap: var(--space-6);
+		/* Align cells to the bottom so that small icons sit on the same baseline
+		   as large ones and size labels line up neatly. */
+		align-items: flex-end;
+		/* Scroll horizontally on narrow viewports rather than wrapping, to avoid
+		   disrupting the layout when large sizes overflow. */
+		overflow-x: auto;
+		flex-wrap: nowrap;
+		padding-bottom: var(--space-2);
+	}
+</style>

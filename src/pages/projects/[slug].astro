@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BgSelector from "../../components/BgSelector.astro";
+import IconGrid from "../../components/IconGrid.astro";
+import { projects, type Project } from "../../data/projects.ts";
+
+export function getStaticPaths() {
+	return projects.map((project) => ({
+		params: { slug: project.slug },
+		props: { project },
+	}));
+}
+
+interface Props {
+	project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<BaseLayout title={`${project.name} — SVG Icon Previewer`}>
+	<div class="container">
+		<nav aria-label="Breadcrumb" class="breadcrumb">
+			<a href="/">Home</a>
+			<span aria-hidden="true"> › </span>
+			<span>{project.name}</span>
+		</nav>
+
+		<h1>{project.name}</h1>
+		{project.description && <p class="project-description">{project.description}</p>}
+
+		<!--
+			#preview-root scopes the background-switching interaction.
+			BgSelector sets --preview-bg here via JS; all IconPreview cells
+			inside inherit it through CSS custom property propagation.
+			data-bg mirrors the active colour as an attribute for reference.
+		-->
+		<div id="preview-root" style="--preview-bg: #ffffff">
+			<BgSelector />
+			{project.icons.map((icon) => <IconGrid icon={icon} />)}
+		</div>
+	</div>
+</BaseLayout>
