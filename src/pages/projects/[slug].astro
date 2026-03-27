@@ -37,7 +37,21 @@ const { project } = Astro.props;
 		-->
 		<div id="preview-root" style="--preview-bg: #ffffff">
 			<BgSelector />
-			{project.icons.map((icon) => <IconGrid icon={icon} />)}
+			<div class="preview-canvas">
+				{project.icons.map((icon) => <IconGrid icon={icon} />)}
+			</div>
 		</div>
 	</div>
 </BaseLayout>
+
+
+<style>
+	.preview-canvas {
+		background-color: var(--preview-bg, #ffffff);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		padding: var(--space-6) var(--space-8);
+		/* Smooth colour transitions when the swatch changes. */
+		transition: background-color 0.2s ease;
+	}
+</style>
